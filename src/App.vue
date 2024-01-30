@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import Container from './components/Container.vue'
 
 </script>
 
 <template>
-  <HelloWorld msg="看看剪贴板里有什么" />
+  <Container msg="看看剪贴板里有什么" />
 </template>
 
 <style scoped>
