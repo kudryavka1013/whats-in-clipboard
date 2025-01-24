@@ -10,6 +10,7 @@ const data = ref<{}[]>([]);
 const onClick = async () => {
   const clipboardItems = await navigator.clipboard.read();
   // const contentText = await navigator.clipboard.readText();
+  console.log(navigator.clipboard)
   console.log("clipboardItems", clipboardItems);
   // 默认只有一个 clipboardItem
   const items: any = [];
@@ -17,6 +18,7 @@ const onClick = async () => {
     const blobs: any = [];
     for (const type of clipboardItem.types) {
       const blob = await clipboardItem.getType(type);
+      console.log(blob)
       const dataHtmlText = await blob.text();
       console.log(type, dataHtmlText);
       blobs.push({ type, dataHtmlText });
@@ -26,6 +28,13 @@ const onClick = async () => {
   data.value = items;
   console.log("data", data.value);
 };
+
+const onPaste = async (e)=>{
+  console.log(e.clipboardData.files)
+  console.log(e.clipboardData.items[0], e.clipboardData.items[1], e.clipboardData.items[2], e.clipboardData.items[3])
+  console.log(e.clipboardData.types)
+}
+
 </script>
 
 <template>
@@ -33,6 +42,7 @@ const onClick = async () => {
 
   <div class="card">
     <button @click="onClick">点我看看</button>
+    <input @paste="onPaste">
   </div>
   <div>
     <div v-for="item in data">
