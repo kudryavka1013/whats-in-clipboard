@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import Container from './components/Container.vue'
-
+import Container from "./components/Container.vue";
 </script>
 
 <template>
-  <Container msg="看看剪贴板里有什么" />
+  <h1>What's in clipboard?</h1>
+  <Container />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 </style>
