@@ -29,23 +29,22 @@ const onPaste = async (e: ClipboardEvent) => {
    */
 
   // Sync Event
+  if (!e.clipboardData) return;
   const types = e.clipboardData.types;
-  const blobs: ICardData[] = [];
+  const infos: ICardData[] = [];
   for (const mimeType of types) {
     const dataRawText = e.clipboardData.getData(mimeType);
-    console.log(e.clipboardData?.items);
     if (mimeType !== MIMEType.FILE) {
-      blobs.push({ type: "Sync Event", mimeType, dataRawText });
+      infos.push({ type: "Sync Event", mimeType, dataRawText });
     } else {
       if (e.clipboardData.files.length > 0) {
-        console.log(e.clipboardData.files);
         const fileList: { name: string; size: number }[] = Array.from(
           e.clipboardData.files
         ).map((file: File) => ({
           name: file.name || "",
           size: file.size || 0,
         }));
-        blobs.push({
+        infos.push({
           type: "Sync Event",
           mimeType: MIMEType.FILE,
           fileList,
@@ -53,17 +52,18 @@ const onPaste = async (e: ClipboardEvent) => {
       }
     }
   }
-  data.value.push([...blobs]);
+  data.value.push(infos);
 
   // Async API
   const clipboardItems = await navigator.clipboard.read();
   // 通常只有一个 clipboardItem
-  const items: ICardData[] = [];
+  const items: ICardData[][] = [];
   for (const clipboardItem of clipboardItems) {
     const blobs: ICardData[] = [];
     for (const mimeType of clipboardItem.types) {
       const blob = await clipboardItem.getType(mimeType);
       const dataRawText = await blob.text();
+
       if (mimeType === MIMEType.TEXT) {
         const existingPlainTextItem = data.value
           .flat()
@@ -74,12 +74,13 @@ const onPaste = async (e: ClipboardEvent) => {
           );
         if (existingPlainTextItem) {
           existingPlainTextItem.type = "Sync Event / Async API";
+          continue;
         }
-      } else {
-        blobs.push({ type: "Async API", mimeType, dataRawText });
       }
+
+      blobs.push({ type: "Async API", mimeType, dataRawText });
     }
-    items.push([...blobs]);
+    items.push(blobs);
   }
   data.value.push(...items);
 };

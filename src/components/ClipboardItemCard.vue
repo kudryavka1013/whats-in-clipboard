@@ -14,7 +14,6 @@ const isExpanded = ref(true);
 const toggleExpanded = () => {
   isExpanded.value = !isExpanded.value;
 };
-console.log(props.mimeType);
 // 监听 props 变化，数据更新时重新展开
 watch(
   () => [props.type, props.mimeType, props.content],
