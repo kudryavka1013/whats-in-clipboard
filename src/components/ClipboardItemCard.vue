@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import FoldUpOneIcon from "../assets/fold-up-one.svg";
-import ExpandDownOneIcon from "../assets/expand-down-one.svg";
+import UpIcon from "../assets/up.svg";
+import DownIcon from "../assets/down.svg";
 
 const props = defineProps<{
   type: string;
@@ -31,7 +31,8 @@ watch(
         <span class="mime-type">{{ props.mimeType }}</span>
       </div>
       <span class="toggle-icon" @click="toggleExpanded">
-        <img :src="isExpanded ? FoldUpOneIcon : ExpandDownOneIcon" />
+        <UpIcon v-if="isExpanded" />
+        <DownIcon v-else />
       </span>
     </div>
     <div class="content" :class="{ expanded: isExpanded }">
@@ -93,6 +94,10 @@ watch(
 .toggle-icon {
   cursor: pointer;
   user-select: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content {
@@ -121,18 +126,44 @@ watch(
 
 @media (prefers-color-scheme: dark) {
   .card {
-    background-color: #1f2937;
-    border-color: #374151;
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   }
 
-  .content {
-    background-color: #111827;
-    border-color: #374151;
-    color: #e5e7eb;
+  .type-container {
+    background-color: #1e40af;
+    color: #f1f5f9;
   }
 
   .type {
-    background-color: #4b5563;
+    background-color: #7c3aed;
+    color: #f1f5f9;
+  }
+
+  .mime-type {
+    color: #cbd5e1;
+  }
+
+  .content {
+    background-color: #0f172a;
+    border-color: #334155;
+  }
+
+  .content.expanded {
+    border-color: #475569;
+  }
+
+  code {
+    color: #e2e8f0;
+  }
+
+  .toggle-icon {
+    color: #f1f5f9;
+  }
+
+  .toggle-icon:hover {
+    color: #cbd5e1;
   }
 }
 </style>
